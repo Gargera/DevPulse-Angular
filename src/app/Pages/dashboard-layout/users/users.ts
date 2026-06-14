@@ -18,8 +18,11 @@ export class Users implements OnInit{
 
   ngOnInit(): void {
     this.authService.getUsers().subscribe({
-        next: (data) => {this.users = data},
+        next: (data) => {
+          this.users = data
+        },
         error: (err) => {
+          console.log(err);
            this.router.navigate(['/403']);
         }
     })

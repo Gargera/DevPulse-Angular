@@ -27,8 +27,6 @@ export class CreateBlog implements OnInit {
   blogForm: FormGroup;
   categories: Category[] = [];
 
-  @Output() CreateBlogEvent = new EventEmitter();
-
   constructor(private fb: FormBuilder) {
     this.blogForm = this.fb.group({
       Title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
@@ -151,7 +149,6 @@ export class CreateBlog implements OnInit {
 
       this.blogService.createBlog(sendData).subscribe({
         next: () => {
-          this.CreateBlogEvent.emit();
           this.blogForm.reset({ Title: '', Content: '', Category: '' });
           this.imagePreview = null;
           this.selectedFileName = '';

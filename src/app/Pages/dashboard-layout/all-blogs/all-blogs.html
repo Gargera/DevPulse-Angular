@@ -28,7 +28,6 @@
       <table class="admin-table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Image</th>
             <th>Title</th>
             <th>Category</th>
@@ -38,7 +37,6 @@
         <tbody>
           @for (blog of filteredBlogs; track blog.id) {
             <tr>
-              <td class="blog-id">#{{ blog.id }}</td>
               <td>
                 <div class="img-preview">
                   <img [src]="blog.imageUrl || 'assets/default-blog.png'" alt="Blog Image" />

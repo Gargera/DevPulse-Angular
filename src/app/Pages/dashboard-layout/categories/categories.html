@@ -64,7 +64,6 @@
           <table class="admin-table">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Category Name</th>
                 <th>Actions</th>
               </tr>
@@ -72,7 +71,6 @@
             <tbody>
               @for (cat of categories; track cat.id) {
                 <tr>
-                  <td class="cat-id">#{{ cat.id }}</td>
                   <td class="cat-name">{{ cat.name }}</td>
                   <td>
                     <div class="action-buttons">
