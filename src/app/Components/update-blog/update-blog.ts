@@ -40,42 +40,29 @@ export class UpdateBlog implements OnInit {
       image: [null]
     });
 
-    if (this.blogId) {
-      this.loadBlogData();
-    } else {
-      this.errorMessage = 'Invalid Blog ID';
-      this.isLoading = false;
-    }
-  }
+    this.isLoading = true;
 
-  async loadBlogData(): Promise<void> {
-    try {
-      this.isLoading = true;
-      const response = await fetch(`${this.domainUrl}/api/blogs/${this.blogId}`);
-      if (!response.ok) throw new Error('Failed to fetch blog details');
-      
-      const blog = await response.json();
-      
-      this.updateForm.patchValue({
-        title: blog.title,
-        content: blog.content
+      this.blogService.getBlogById(this.blogId).subscribe({
+        next: (data) => {
+          this.updateForm.patchValue({
+              title: data.title,
+              content: data.content
+            });
+
+          if (data.imageUrl) {
+            this.currentImageUrl = data.imageUrl;
+            this.imagePreview = this.domainUrl + data.imageUrl;
+          }
+        },
+        error: (err) => {
+          if(err.status === 404) this.router.navigate(['/not-found']);
+          console.log(err);
+        }
       });
-
-      if (blog.imageUrl) {
-        this.currentImageUrl = blog.imageUrl;
-        this.imagePreview = this.domainUrl + blog.imageUrl;
-      }
-    } 
-    catch (error) 
-    {
-      this.errorMessage = 'Could not load blog details. It may have been deleted.';
-      console.error(error);
-    } 
-    finally 
-    {
+    
       this.isLoading = false;
-    }
   }
+
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -168,8 +155,7 @@ export class UpdateBlog implements OnInit {
     this.updateForm.markAllAsTouched();
 
     if (this.updateForm.valid && !this.imageError) {
-      try {
-        this.isSubmitting = true;
+      this.isSubmitting = true;
         this.errorMessage = '';
 
         const formData = new FormData();
@@ -178,31 +164,17 @@ export class UpdateBlog implements OnInit {
         
         if (this.selectedFile) 
         {
-          formData.append('ImageFile', this.selectedFile);
+          formData.append('Image', this.selectedFile);
         } 
-        else if (this.currentImageUrl) 
-        {
-          formData.append('KeepExistingImage', 'true');
-        }
 
-        const response = await fetch(`${this.domainUrl}/api/blogs/update/${this.blogId}`, {
-          method: 'PUT',
-          body: formData
-        });
+        this.blogService.updateBlog(this.blogId, formData).subscribe({
+            error: (err) => {
+              this.errorMessage = err.Message;
+              console.log(err);
+            }
+        })
 
-        if (!response.ok) throw new Error('Failed to update blog');
-
-        this.router.navigate(['/my-blogs']);
-      } 
-      catch (error) 
-      {
-        this.errorMessage = 'An error occurred while saving. Please try again.';
-        console.error(error);
-      } 
-      finally 
-      {
         this.isSubmitting = false;
-      }
     }
   }
 }

@@ -31,7 +31,6 @@ export class AuthService
   logIn(user: FormData): Observable<any>
   {
     return this.http.post(`${this.accountApiUrl}/login`, user);
-    //localStorage.setItem('token', token);
   }
 
   getUsers() : Observable<UserDto[]>

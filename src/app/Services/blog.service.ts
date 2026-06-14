@@ -31,12 +31,12 @@ export class BlogService {
     return this.http.get<Blog[]>(`${this.apiUrl}/my-blogs`);
   }
 
-  createBlog(blogData: Blog): Observable<any> 
+  createBlog(blogData: FormData): Observable<any> 
   {
     return this.http.post(`${this.apiUrl}/create`, blogData);
   }
 
-  updateBlog(id: number, blogData: Blog): Observable<any> 
+  updateBlog(id: number, blogData: FormData): Observable<any> 
   {
     return this.http.put(`${this.apiUrl}/${id}`, blogData);
   }

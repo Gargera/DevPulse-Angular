@@ -13,6 +13,7 @@ import { AuthService } from '../../../Services/auth.service';
 export class Login {
   showPassword = false;
   loginForm: FormGroup;
+  responseErrorMessage: string = "";
 
   constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
     this.loginForm = this.fb.group({
@@ -66,10 +67,18 @@ export class Login {
         formData.append('userName', this.loginForm.value.username);
         formData.append('password', this.loginForm.value.password);
 
-        this.authService.logIn(formData);
-        
-        this.router.navigate(['/home']);
-        this.loginForm.reset();
+        this.authService.logIn(formData).subscribe({
+          next: (data) => {
+            localStorage.setItem('token', data);
+            this.router.navigate(['/home']);
+            this.loginForm.reset();
+            this.responseErrorMessage = "";
+          },
+          error: (err) => {
+            this.responseErrorMessage = err.Message;
+            console.log(err);
+          }
+        })
       }
     }
 }
