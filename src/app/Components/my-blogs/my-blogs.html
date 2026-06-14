@@ -1,13 +1,15 @@
-<div class="my-blogs-container">
+<div class="admin-page-container">
   
-  <div class="section-header">
-    @if (isDashboardMode) {
-      <h2>Dashboard - My Personal Blogs</h2>
-      <p>Manage, modify, or delete the blog posts you have written.</p>
-    } @else {
-      <h2>My Published Insights</h2>
-      <p>Here are all the articles you have contributed to the DevPulse community.</p>
-    }
+  <div class="page-header">
+    <div class="header-text">
+      @if (isDashboardMode) {
+        <h2>Dashboard - My Personal Blogs</h2>
+        <p>Manage, modify, or delete the blog posts you have written.</p>
+      } @else {
+        <h2>My Published Insights</h2>
+        <p>Here are all the articles you have contributed to the DevPulse community.</p>
+      }
+    </div>
   </div>
 
   @if (isLoading) {
@@ -17,33 +19,58 @@
     </div>
   } @else {
     
-    <div class="blogs-grid">
-      @for (blog of myBlogs; track blog.id) {
-        <div class="blog-item-wrapper">
-          
-          <app-blog-card [BlogData]="blog"></app-blog-card>
-
-          @if (isDashboardMode) {
-            <div class="admin-actions-overlay">
-              <button class="btn-overlay-action btn-overlay-edit" [routerLink]="['/admin/edit-blog', blog.id]">
-                <i class="bi bi-pencil-square"></i> Edit
-              </button>
-              <button class="btn-overlay-action btn-overlay-delete" (click)="deleteBlog(blog.id, $event)">
-                <i class="bi bi-trash3-fill"></i> Delete
-              </button>
-            </div>
+    <div class="table-responsive glass-card">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (blog of myBlogs; track blog.id) {
+            <tr>
+              <td>
+                <div class="img-preview">
+                  <img [src]="blog.imageUrl || 'assets/default-blog.png'" alt="Blog Image" />
+                </div>
+              </td>
+              <td class="blog-title">{{ blog.title | truncate:30 }}</td>
+              <td><span class="category-badge">{{ blog.categoryName }}</span></td>
+              <td>
+                <div class="action-buttons">
+                  @if(isDashboardMode)
+                  {
+                    <button class="btn-action btn-edit" [routerLink]=  "['/admin/updateBlog', blog.id]">
+                      Edit
+                    </button>
+                  }
+                  @else 
+                  {
+                     <button class="btn-action btn-edit" [routerLink]=  "['/profile/updateBlog', blog.id]">
+                        Edit
+                     </button>
+                  }
+                  <button class="btn-action btn-delete" (click)="deleteBlog(blog.id)">
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4" class="empty-row">
+                <div class="empty-state-content">
+                  <p>You haven't written any blogs yet.</p>
+                </div>
+              </td>
+            </tr>
           }
-
-        </div>
-      } @empty {
-        <div class="empty-state-box">
-          <i class="bi bi-journal-x"></i>
-          <p>You haven't written any blogs yet.</p>
-          @if (isDashboardMode) {
-            <button class="btn-create-first" routerLink="/admin/create-blog">Create Your First Blog</button>
-          }
-        </div>
-      }
+        </tbody>
+      </table>
     </div>
+
   }
 </div>

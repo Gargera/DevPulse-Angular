@@ -42,11 +42,11 @@
                   <img [src]="blog.imageUrl || 'assets/default-blog.png'" alt="Blog Image" />
                 </div>
               </td>
-              <td class="blog-title">{{ blog.title }}</td>
+              <td class="blog-title">{{ blog.title | truncate:30}}</td>
               <td><span class="category-badge">{{ blog.categoryName }}</span></td>
               <td>
                 <div class="action-buttons">
-                  <button class="btn-action btn-edit" (click)="editBlog(blog.id)">
+                  <button class="btn-action btn-edit" [routerLink]="['/admin/updateBlog', blog.id]">
                     Edit
                   </button>
                   <button class="btn-action btn-delete" (click)="deleteBlog(blog.id)">

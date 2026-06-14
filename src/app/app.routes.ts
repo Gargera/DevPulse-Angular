@@ -28,7 +28,7 @@ export const routes: Routes = [
         {path: 'profile', component: ProfileLayout, title: 'DevPulse - Profile', canActivate: [authGuard], children: [
             {path: '', redirectTo: 'my-blogs', pathMatch: 'full'},
             {path: 'my-blogs', component: MyBlogs},
-            {path: 'update', component: UpdateBlog}
+            {path: 'updateBlog/:id', component: UpdateBlog}
         ]},
         {path: 'blogs/:id', component: BlogDetails, title: "DevPulse - BlogDetails"}
     ]},
@@ -38,7 +38,7 @@ export const routes: Routes = [
         {path: 'my-blogs', component: MyBlogs},
         {path: 'categories', component: Categories},
         {path: 'users', component: Users},
-        {path: 'update/:id', component: UpdateBlog}
+        {path: 'updateBlog/:id', component: UpdateBlog}
     ]},
     {path: 'auth', component: AuthLayoutComponent, children: [
         {path: '', redirectTo: 'login', pathMatch: 'full' },

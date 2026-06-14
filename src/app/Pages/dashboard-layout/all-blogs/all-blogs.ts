@@ -2,13 +2,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Blog } from '../../../Core/Models/Blog/Blog';
 import { BlogService } from '../../../Services/blog.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { TruncatePipe } from '../../../Core/pipes/truncate-pipe';
 
 @Component({
   selector: 'app-all-blogs',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink, TruncatePipe],
   templateUrl: './all-blogs.html',
   styleUrl: './all-blogs.css',
 })
@@ -90,9 +91,5 @@ export class AllBlogs implements OnInit {
         });
       }
     });
-  }
-
-  editBlog(id: number): void {
-    this.router.navigate([`/admin/update/${id}`]);
   }
 }

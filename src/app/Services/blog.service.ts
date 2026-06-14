@@ -38,7 +38,7 @@ export class BlogService {
 
   updateBlog(id: number, blogData: FormData): Observable<any> 
   {
-    return this.http.put(`${this.apiUrl}/${id}`, blogData);
+    return this.http.put(`${this.apiUrl}/update/${id}`, blogData);
   }
 
   deleteBlog(id: number): Observable<any> 

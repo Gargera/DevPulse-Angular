@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import { Component, inject, Input, OnInit, SimpleChanges} from '@angular/core';
 import { BlogCard } from '../blog-card/blog-card';
 import { Blog } from '../../Core/Models/Blog/Blog';
 import { BlogService } from '../../Services/blog.service';
@@ -9,19 +9,12 @@ import { BlogService } from '../../Services/blog.service';
   templateUrl: './latest-blogs.html',
   styleUrl: './latest-blogs.css',
 })
-export class LatestBlogs implements OnChanges, OnInit{
+export class LatestBlogs implements OnInit{
   private blogService = inject(BlogService);
 
   Blogs: Blog[] = [];
-  @Input() parentBlogData: Blog = {id:0, imageUrl:"", title: "", content: "", categoryName: "", userName: "", createdAt: new Date()};
-
+  
   ngOnInit(): void {
     //this.Blogs = call api 
-  }
-
-  ngOnChanges(changes: SimpleChanges): void 
-  {
-    if(!changes["parentBlogData"].firstChange) 
-       this.Blogs.push(this.parentBlogData);
   }
 }

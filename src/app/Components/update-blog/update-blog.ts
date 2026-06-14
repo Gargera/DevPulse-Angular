@@ -207,7 +207,7 @@ export class UpdateBlog implements OnInit {
             this.location.back();
           },
           error: (err) => {
-            this.errorMessage = err?.error?.Message;
+            this.errorMessage = err?.error;
             console.log(err);
           }
         });
