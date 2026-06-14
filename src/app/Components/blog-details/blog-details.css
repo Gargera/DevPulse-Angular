@@ -209,53 +209,6 @@
   letter-spacing: -0.1px;
 }
 
-.article-footer {
-  border-top: 1px solid var(--border);
-  padding-top: 28px;
-  margin-top: 40px;
-}
-
-.share-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.share-box span {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-hint);
-}
-
-.share-links {
-  display: flex;
-  gap: 10px;
-}
-
-.share-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--white);
-  color: var(--text-muted);
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s var(--ease);
-}
-
-.share-btn:hover {
-  color: var(--white);
-  background: var(--p1);
-  border-color: var(--p1);
-  transform: translateY(-2px);
-}
-
 .status-state {
   display: flex;
   flex-direction: column;
@@ -313,7 +266,6 @@
   .blog-article { padding: 24px; }
   .article-title { font-size: 26px; }
   .content-text { font-size: 15.5px; line-height: 1.75; }
-  .share-box { flex-direction: column; align-items: flex-start; }
 }
 
 @keyframes fadeIn {

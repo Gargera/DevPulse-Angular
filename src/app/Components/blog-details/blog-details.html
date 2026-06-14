@@ -29,7 +29,7 @@
       <article class="blog-article">
         
         <header class="article-header">
-          <span class="category-badge">{{ blog.categoryName }}</span>
+          <span class="category-badge" [appCategoryColor]="blog.categoryName">{{ blog.categoryName }}</span>
           <h1 class="article-title">{{ blog.title }}</h1>
           
           <div class="meta-profile">
@@ -56,17 +56,6 @@
         <section class="article-body">
           <p class="content-text">{{ blog.content }}</p>
         </section>
-
-        <footer class="article-footer">
-          <div class="share-box">
-            <span>Enjoyed reading? Share this article</span>
-            <div class="share-links">
-              <button class="share-btn"><i class="bi bi-twitter-x"></i></button>
-              <button class="share-btn"><i class="bi bi-linkedin"></i></button>
-              <button class="share-btn"><i class="bi bi-link-45deg"></i></button>
-            </div>
-          </div>
-        </footer>
 
       </article>
     }

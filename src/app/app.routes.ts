@@ -16,6 +16,7 @@ import { Categories } from './Pages/dashboard-layout/categories/categories';
 import { ProfileLayout } from './Pages/main-layout/profile-layout/profile-layout';
 import { authGuard } from './Core/Guards/auth-guard'; 
 import { adminGuard } from './Core/Guards/admin-guard';
+import { UpdateBlog } from './Components/update-blog/update-blog';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -26,7 +27,8 @@ export const routes: Routes = [
         {path: 'blogs', component: Blogs, title: 'DevPulse - Blogs'},
         {path: 'profile', component: ProfileLayout, title: 'DevPulse - Profile', canActivate: [authGuard], children: [
             {path: '', redirectTo: 'my-blogs', pathMatch: 'full'},
-            {path: 'my-blogs', component: MyBlogs}
+            {path: 'my-blogs', component: MyBlogs},
+            {path: 'update', component: UpdateBlog}
         ]},
         {path: 'blogs/:id', component: BlogDetails, title: "DevPulse - BlogDetails"}
     ]},
@@ -35,7 +37,8 @@ export const routes: Routes = [
         {path: 'all-blogs', component: AllBlogs},
         {path: 'my-blogs', component: MyBlogs},
         {path: 'categories', component: Categories},
-        {path: 'users', component: Users}
+        {path: 'users', component: Users},
+        {path: 'update', component: UpdateBlog}
     ]},
     {path: 'auth', component: AuthLayoutComponent, children: [
         {path: '', redirectTo: 'login', pathMatch: 'full' },

@@ -19,22 +19,19 @@ export class AllBlogs implements OnInit {
   isLoading: boolean = true;
 
   ngOnInit(): void {
-    // this.loadAllBlogs();
-  }
+    this.isLoading = true;
 
-  // loadAllBlogs(): void {
-  //   this.isLoading = true;
-  //   this.blogService.getBlogs().subscribe({
-  //     next: (data: Blog[]) => {
-  //       this.blogs = data;
-  //       this.filteredBlogs = data; 
-  //       this.isLoading = false;
-  //     },
-  //     error: (err: any) => {
-  //       this.isLoading = false;
-  //     }
-  //   });
-  // }
+    this.blogService.getBlogs().subscribe({
+      next: (data) => {
+        this.blogs = this.filteredBlogs = data;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+
+    this.isLoading = false;
+  }
 
   onSearch(): void {
     const query = this.searchQuery.toLowerCase().trim();
@@ -56,12 +53,19 @@ export class AllBlogs implements OnInit {
       this.isLoading = true;
       this.blogService.deleteBlog(id).subscribe({
         next: () => {
-          alert('Blog deleted successfully');
-          this.blogs = this.blogs.filter(b => b.id !== id);
-          this.filteredBlogs = this.filteredBlogs.filter(b => b.id !== id);
+          this.blogService.getBlogs().subscribe({
+            next: (data) => {
+              this.blogs = this.filteredBlogs = data;
+            },
+            error: (err) => {
+              console.log(err);
+              this.isLoading = false;
+            }
+          })
           this.isLoading = false;
         },
         error: (err : any) => {
+          console.log(err);
           this.isLoading = false;
         }
       });
@@ -70,6 +74,6 @@ export class AllBlogs implements OnInit {
 
   editBlog(id: number) : void
   {
-
+        
   }
 }
