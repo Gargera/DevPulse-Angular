@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 :host {
   --p1: #7c3aed;
   --p2: #9333ea;
@@ -113,11 +121,6 @@
   color: var(--text-muted);
   margin: 0;
   line-height: 1.6;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .blog-meta {

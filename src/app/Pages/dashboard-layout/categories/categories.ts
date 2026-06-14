@@ -34,7 +34,7 @@ export class Categories implements OnInit{
   {
      this.categoryService.deleteCategory(id).subscribe({
       error: (err) => {
-        if(err.status === 404) this.router.navigate(['/not-found']);
+        if(err?.error?.status === 404) this.router.navigate(['/not-found']);
         else this.router.navigate(['/403']);
       }
      })

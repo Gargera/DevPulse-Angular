@@ -23,7 +23,7 @@
           <input type="text" class="auth-input" placeholder="Enter your username"
             formControlName="username" autocomplete="username" />
         </div>
-        <span class="error-message">{{ usernameValid.Message + responseErrorMessage }}</span>
+        <span class="error-message">{{ usernameValid.Message }}</span>
       </div>
 
       <div class="field-group">
@@ -38,7 +38,7 @@
             <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
           </button>
         </div>
-        <span class="error-message">{{ passwordValid.Message + responseErrorMessage }}</span>
+        <span class="error-message">{{ passwordValid.Message }}</span>
       </div>
 
       <button type="submit" class="btn-primary">

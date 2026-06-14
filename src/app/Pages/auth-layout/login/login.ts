@@ -31,6 +31,8 @@ export class Login {
 
     if (usernameControl?.errors?.['required'])
       response.Message = "Username is required";
+    if(this.responseErrorMessage != "")
+      response.Message = this.responseErrorMessage;
     else
       response.Success = true;
 
@@ -46,6 +48,8 @@ export class Login {
 
     if (passwordControl?.errors?.['required'])
       response.Message = "Password is required";
+    if(this.responseErrorMessage != "")
+      response.Message = this.responseErrorMessage
     else
       response.Success = true;
 
@@ -62,12 +66,12 @@ export class Login {
   
       if (this.loginForm.valid) 
       {
-        const formData = new FormData();
-        
-        formData.append('userName', this.loginForm.value.username);
-        formData.append('password', this.loginForm.value.password);
+        const user = {
+          userName: this.loginForm.value.username,
+          password: this.loginForm.value.password
+        }
 
-        this.authService.logIn(formData).subscribe({
+        this.authService.logIn(user).subscribe({
           next: (data) => {
             localStorage.setItem('token', data);
             this.router.navigate(['/home']);
@@ -75,8 +79,7 @@ export class Login {
             this.responseErrorMessage = "";
           },
           error: (err) => {
-            this.responseErrorMessage = err.Message;
-            console.log(err);
+            this.responseErrorMessage = err?.error;
           }
         })
       }

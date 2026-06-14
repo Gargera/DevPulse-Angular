@@ -13,7 +13,7 @@
 
   <div class="blog-body">
     <h3 class="blog-title">{{ BlogData.title }}</h3>
-    <p class="blog-content">{{ BlogData.content }}</p>
+    <p class="blog-content">{{ BlogData.content | truncate:130 }}</p>
   </div>
 
   <div class="blog-meta">

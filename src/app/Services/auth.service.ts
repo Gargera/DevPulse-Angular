@@ -28,7 +28,7 @@ export class AuthService
     return this.http.put(`${this.accountApiUrl}/update`, user);
   }
 
-  logIn(user: FormData): Observable<any>
+  logIn(user: any): Observable<any>
   {
     return this.http.post(`${this.accountApiUrl}/login`, user);
   }

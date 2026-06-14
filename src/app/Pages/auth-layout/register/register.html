@@ -14,6 +14,18 @@
     <h1 class="card-title">Create your account</h1>
     <p class="card-subtitle">Join thousands of tech readers today</p>
 
+    @if (apiErrorMessage) {
+      <div class="api-error-alert">
+        <i class="bi bi-exclamation-octagon-fill"></i>
+        <div class="alert-content">
+          <p>{{ apiErrorMessage }}</p>
+        </div>
+        <button type="button" class="btn-close-alert" (click)="apiErrorMessage = ''" aria-label="Close alert">
+          <i class="bi bi-x"></i>
+        </button>
+      </div>
+    }
+
     <form class="auth-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
       <div class="image-upload-container">

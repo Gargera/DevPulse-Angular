@@ -21,6 +21,7 @@ export class Register {
   selectedFile: File | null = null;
   imagePreview: string | null = null;
   imageError = '';
+  apiErrorMessage = '';
 
   constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
     this.registerForm = this.fb.group({
@@ -211,6 +212,7 @@ export class Register {
 
   onSubmit(): void {
     this.registerForm.markAllAsTouched();
+    this.apiErrorMessage = '';
 
     if (this.registerForm.valid && !this.imageError) {
       const formData = new FormData();
@@ -224,11 +226,23 @@ export class Register {
         formData.append('ProfileImage', this.selectedFile);
       }
 
-      this.authService.register(formData);
-
-      this.router.navigate(['/auth/login']);
-      this.registerForm.reset();
-      this.removeImage();
+      this.authService.register(formData).subscribe({
+        next: () => {
+          this.router.navigate(['/auth/login']);
+          this.registerForm.reset();
+          this.removeImage();
+        },
+        error: (err) => {
+          if (err?.error) 
+          {
+            this.apiErrorMessage = err?.error;
+          }
+          else
+          {
+            console.log(err);
+          }
+        }
+      });
     }
   }
 }
