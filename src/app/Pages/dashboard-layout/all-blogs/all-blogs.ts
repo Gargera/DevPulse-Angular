@@ -3,9 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { Blog } from '../../../Core/Models/Blog/Blog';
 import { BlogService } from '../../../Services/blog.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-all-blogs',
+  standalone: true,
   imports: [FormsModule],
   templateUrl: './all-blogs.html',
   styleUrl: './all-blogs.css',
@@ -21,18 +23,21 @@ export class AllBlogs implements OnInit {
   isLoading: boolean = true;
 
   ngOnInit(): void {
-    this.isLoading = true;
+    this.loadBlogsFromServer();
+  }
 
+  loadBlogsFromServer(): void {
+    this.isLoading = true;
     this.blogService.getBlogs().subscribe({
       next: (data) => {
         this.blogs = this.filteredBlogs = data;
+        this.isLoading = false;
       },
       error: (err) => {
         console.log(err);
+        this.isLoading = false;
       }
-    })
-
-    this.isLoading = false;
+    });
   }
 
   onSearch(): void {
@@ -49,33 +54,45 @@ export class AllBlogs implements OnInit {
     );
   }
 
-  deleteBlog(id: number): void 
-  {
-    if (confirm('Are you sure you want to delete this blog permanently?')) {
-      this.isLoading = true;
-      this.blogService.deleteBlog(id).subscribe({
-        next: () => {
-          this.blogService.getBlogs().subscribe({
-            next: (data) => {
-              this.blogs = this.filteredBlogs = data;
-            },
-            error: (err) => {
-              console.log(err);
-              this.isLoading = false;
-            }
-          })
-          this.isLoading = false;
-        },
-        error: (err : any) => {
-          console.log(err);
-          this.isLoading = false;
-        }
-      });
-    }
+  deleteBlog(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this article permanently!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#7c3aed',
+      cancelButtonColor: '#dc2626',  
+      confirmButtonText: 'Yes, delete it! 🗑️',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.isLoading = true;
+        this.blogService.deleteBlog(id).subscribe({
+          next: () => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'The article has been deleted successfully.',
+              icon: 'success',
+              confirmButtonColor: '#7c3aed'
+            });
+            this.loadBlogsFromServer();
+          },
+          error: (err) => {
+            console.log(err);
+            this.isLoading = false;
+            Swal.fire({
+              title: 'Error!',
+              text: 'Could not delete the article. Please try again.',
+              icon: 'error',
+              confirmButtonColor: '#7c3aed'
+            });
+          }
+        });
+      }
+    });
   }
 
-  editBlog(id: number) : void
-  {
+  editBlog(id: number): void {
     this.router.navigate([`/admin/update/${id}`]);
   }
 }

@@ -373,3 +373,26 @@
 @media (max-width: 520px) {
   .auth-card { padding: 24px 16px; }
 }
+
+.swal2-popup {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border) !important;
+}
+
+.swal2-title {
+  color: var(--text-main) !important;
+  font-weight: 800 !important;
+}
+
+.swal2-html-container {
+  color: var(--text-muted) !important;
+  font-weight: 500 !important;
+}
+
+.swal2-styled {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+}

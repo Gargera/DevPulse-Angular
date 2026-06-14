@@ -7,6 +7,7 @@ import { Category } from '../../Core/Models/Category/Category';
 import { environment } from '../../../environments/environment.development';
 import { IValidationResponse } from '../../Core/Models/Common/IValidationResponse';
 import { CommonModule, Location } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-update-blog',
@@ -190,17 +191,30 @@ export class UpdateBlog implements OnInit {
         formData.append('ImageFile', this.selectedFile);
       }
 
-      this.blogService.updateBlog(this.blogId, formData).subscribe({
-        next: () => {
-          this.location.back();
-        },
-        error: (err) => {
-          this.errorMessage = err?.error?.Message;
-          console.log(err);
-        }
-      });
+      Swal.fire({
+      title: 'Edit Article?',
+      text: 'You will be redirected to the modification dashboard.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#9333ea',
+      cancelButtonColor: '#7c6fa0',
+      confirmButtonText: 'Yes, Edit it! ✏️',
+      cancelButtonText: 'Stay here'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.blogService.updateBlog(this.blogId, formData).subscribe({
+          next: () => {
+            this.location.back();
+          },
+          error: (err) => {
+            this.errorMessage = err?.error?.Message;
+            console.log(err);
+          }
+        });
+      }
+    });
 
-      this.isSubmitting = false;
+    this.isSubmitting = false;
     }
   }
 

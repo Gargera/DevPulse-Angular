@@ -1,9 +1,11 @@
 <div class="admin-page-container">
   
   <div class="page-header">
-    <div class="header-text">
-      <h2>Category Management</h2>
-      <p>Create, update, or remove categories to organize blogs on DevPulse.</p>
+    <div class="header-inner">
+      <div class="header-text">
+        <h2>Category Management</h2>
+        <p>Create, update, or remove categories to organize blogs on DevPulse.</p>
+      </div>
     </div>
   </div>
 
@@ -12,6 +14,18 @@
     <div class="form-section glass-card">
       <h3>{{ isEditMode ? 'Edit Category' : 'Create New Category' }}</h3>
       <p class="form-subtitle">Define clear names for blog organization.</p>
+      
+      @if (errorMessage) {
+        <div class="api-error-alert">
+          <i class="bi bi-exclamation-octagon-fill"></i>
+          <div class="alert-content">
+            <p>{{ errorMessage }}</p>
+          </div>
+          <button type="button" class="btn-close-alert" (click)="errorMessage = ''" aria-label="Close alert">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+      }
       
       <form (ngSubmit)="onSubmit()" #catForm="ngForm">
         <div class="form-group">
@@ -29,7 +43,7 @@
 
         <div class="form-actions">
           <button type="submit" class="btn-submit" [disabled]="!catForm.valid || isLoading">
-            {{ isEditMode ? 'Update Category' : 'Add Category' }}
+            {{ isEditMode ? 'Update Category' : 'Create Category' }}
           </button>
           
           @if (isEditMode) {
@@ -40,7 +54,7 @@
     </div>
 
     <div class="list-section">
-      @if (isLoading) {
+      @if (isLoading && categories.length === 0) {
         <div class="spinner-container">
           <div class="custom-spinner"></div>
           <p>Processing data...</p>
