@@ -73,13 +73,15 @@ export class Login {
 
         this.authService.logIn(user).subscribe({
           next: (data) => {
-            localStorage.setItem('token', data);
+            console.log(data.token);
+            localStorage.setItem('token', data.token);
             this.router.navigate(['/home']);
             this.loginForm.reset();
             this.responseErrorMessage = "";
           },
           error: (err) => {
             this.responseErrorMessage = err?.error;
+            console.log(err);
           }
         })
       }
