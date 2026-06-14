@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Blog } from '../../../Core/Models/Blog/Blog';
 import { BlogService } from '../../../Services/blog.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-all-blogs',
@@ -11,6 +12,7 @@ import { BlogService } from '../../../Services/blog.service';
 })
 export class AllBlogs implements OnInit {
   private blogService = inject(BlogService);
+  private router = inject(Router);
 
   blogs: Blog[] = [];
   filteredBlogs: Blog[] = [];
@@ -74,6 +76,6 @@ export class AllBlogs implements OnInit {
 
   editBlog(id: number) : void
   {
-        
+    this.router.navigate([`/admin/update/${id}`]);
   }
 }

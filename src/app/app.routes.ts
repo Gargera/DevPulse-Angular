@@ -38,7 +38,7 @@ export const routes: Routes = [
         {path: 'my-blogs', component: MyBlogs},
         {path: 'categories', component: Categories},
         {path: 'users', component: Users},
-        {path: 'update', component: UpdateBlog}
+        {path: 'update/:id', component: UpdateBlog}
     ]},
     {path: 'auth', component: AuthLayoutComponent, children: [
         {path: '', redirectTo: 'login', pathMatch: 'full' },

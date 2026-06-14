@@ -2,9 +2,11 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BlogService } from '../../Services/blog.service';
+import { CategoryService } from '../../Services/category.service';
+import { Category } from '../../Core/Models/Category/Category';
 import { environment } from '../../../environments/environment.development';
 import { IValidationResponse } from '../../Core/Models/Common/IValidationResponse';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'app-update-blog',
@@ -18,6 +20,8 @@ export class UpdateBlog implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private blogService = inject(BlogService);
+  private categoryService = inject(CategoryService);
+  private location = inject(Location);
 
   updateForm!: FormGroup;
   blogId!: number;
@@ -30,6 +34,7 @@ export class UpdateBlog implements OnInit {
   imageError = '';
   currentImageUrl: string | null = null;
   domainUrl = environment.baseUrl;
+  categories: Category[] = [];
 
   ngOnInit(): void {
     this.blogId = Number(this.route.snapshot.paramMap.get('id'));
@@ -37,32 +42,46 @@ export class UpdateBlog implements OnInit {
     this.updateForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
       content: ['', [Validators.required, Validators.minLength(10)]],
+      Category: ['', Validators.required],
       image: [null]
     });
 
     this.isLoading = true;
 
-      this.blogService.getBlogById(this.blogId).subscribe({
-        next: (data) => {
-          this.updateForm.patchValue({
-              title: data.title,
-              content: data.content
-            });
-
-          if (data.imageUrl) {
-            this.currentImageUrl = data.imageUrl;
-            this.imagePreview = this.domainUrl + data.imageUrl;
-          }
-        },
-        error: (err) => {
-          if(err.status === 404) this.router.navigate(['/not-found']);
-          console.log(err);
-        }
-      });
-    
-      this.isLoading = false;
+    this.categoryService.getCategories().subscribe({
+      next: (catData) => {
+        this.categories = catData;
+        this.loadBlogData();
+      },
+      error: (err) => {
+        console.log(err);
+        this.isLoading = false;
+      }
+    });
   }
 
+  async loadBlogData(): Promise<void> {
+    this.blogService.getBlogById(this.blogId).subscribe({
+      next: (data) => {
+        this.updateForm.patchValue({
+          title: data.title,
+          content: data.content,
+          Category: data.categoryName
+        });
+
+        if (data.imageUrl) {
+          this.currentImageUrl = data.imageUrl;
+          this.imagePreview = this.domainUrl + data.imageUrl;
+        }
+        this.isLoading = false;
+      },
+      error: (err) => {
+        if(err.status === 404) this.router.navigate(['/not-found']);
+        console.log(err);
+        this.isLoading = false;
+      }
+    });
+  }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -78,8 +97,7 @@ export class UpdateBlog implements OnInit {
     }
 
     const maxSize = 5 * 1024 * 1024;
-    if (file.size > maxSize) 
-    {
+    if (file.size > maxSize) {
       this.imageError = 'Image size must be less than 5 MB';
       this.clearImageInput();
       return;
@@ -99,12 +117,9 @@ export class UpdateBlog implements OnInit {
   clearImageInput(): void {
     this.selectedFile = null;
     this.updateForm.patchValue({ image: null });
-    if (this.currentImageUrl) 
-    {
+    if (this.currentImageUrl) {
       this.imagePreview = this.domainUrl + this.currentImageUrl;
-    } 
-    else 
-    {
+    } else {
       this.imagePreview = null;
     }
   }
@@ -120,7 +135,6 @@ export class UpdateBlog implements OnInit {
   get titleValid(): IValidationResponse {
     let response: IValidationResponse = { Success: false, Message: "" };
     let control = this.updateForm.get('title');
-
     if (!control?.touched) return response;
 
     if (control?.errors?.['required'])
@@ -131,14 +145,12 @@ export class UpdateBlog implements OnInit {
       response.Message = `Title cannot exceed ${control.errors?.['maxlength']?.requiredLength} characters`;
     else
       response.Success = true;
-
     return response;
   }
 
   get contentValid(): IValidationResponse {
     let response: IValidationResponse = { Success: false, Message: "" };
     let control = this.updateForm.get('content');
-
     if (!control?.touched) return response;
 
     if (control?.errors?.['required'])
@@ -147,34 +159,53 @@ export class UpdateBlog implements OnInit {
       response.Message = `Content must be at least ${control.errors?.['minlength']?.requiredLength} characters`;
     else
       response.Success = true;
-
     return response;
   }
 
-  async onSubmit(): Promise<void> {
+  get categoryValid(): IValidationResponse {
+    let response: IValidationResponse = { Success: false, Message: "" };
+    let category = this.updateForm.get('Category');
+    if (!category?.touched) return response;
+
+    if (category?.errors?.['required'])
+      response.Message = 'Please select a category';
+    else
+      response.Success = true;
+    return response;
+  }
+
+  onSubmit() {
     this.updateForm.markAllAsTouched();
 
     if (this.updateForm.valid && !this.imageError) {
       this.isSubmitting = true;
-        this.errorMessage = '';
+      this.errorMessage = '';
 
-        const formData = new FormData();
-        formData.append('Title', this.updateForm.value.title);
-        formData.append('Content', this.updateForm.value.content);
-        
-        if (this.selectedFile) 
-        {
-          formData.append('Image', this.selectedFile);
-        } 
+      const formData = new FormData();
+      formData.append('Title', this.updateForm.value.title);
+      formData.append('Content', this.updateForm.value.content);
+      formData.append('CategoryName', this.updateForm.value.Category);
+      
+      if (this.selectedFile) {
+        formData.append('ImageFile', this.selectedFile);
+      }
 
-        this.blogService.updateBlog(this.blogId, formData).subscribe({
-            error: (err) => {
-              this.errorMessage = err.Message;
-              console.log(err);
-            }
-        })
+      this.blogService.updateBlog(this.blogId, formData).subscribe({
+        next: () => {
+          this.location.back();
+        },
+        error: (err) => {
+          this.errorMessage = err?.error?.Message;
+          console.log(err);
+        }
+      });
 
-        this.isSubmitting = false;
+      this.isSubmitting = false;
     }
+  }
+
+  goBack()
+  {
+    this.location.back();
   }
 }
