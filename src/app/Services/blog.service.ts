@@ -1,25 +1,19 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Blog } from '../Core/Models/Blog/Blog';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class BlogService {
-  private apiUrl = 'https://localhost:7219/api/blog';
+  private apiUrl = environment.baseUrl + "/blog"
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
-
-  async getBlogs(): Promise<Blog[]> {
-    const response = await fetch(this.apiUrl);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    return await response.json() as Blog[];
+ getBlogs(): Observable<Blog[]> {
+    return this.http.get<Blog[]>(this.apiUrl);
   }
 
   getBlogById(id: number): Observable<Blog> 
@@ -39,7 +33,7 @@ export class BlogService {
 
   createBlog(blogData: Blog): Observable<any> 
   {
-    return this.http.post(this.apiUrl, blogData);
+    return this.http.post(`${this.apiUrl}/create`, blogData);
   }
 
   updateBlog(id: number, blogData: Blog): Observable<any> 

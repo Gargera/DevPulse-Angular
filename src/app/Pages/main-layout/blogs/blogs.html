@@ -33,20 +33,30 @@
         </div>
 
         <div class="select-wrapper">
-          <svg class="select-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2">
-            <path d="M4 6h16M7 12h10M10 18h4"/>
-          </svg>
-          <select class="category-select" [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
-            <option [ngValue]="null">All Categories</option>
-            @for(cat of categories; track cat.id) {
-              <option [ngValue]="cat.id">{{ cat.name }}</option>
-            }
-          </select>
-          <svg class="chevron-icon" width="13" height="13" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2.5">
-            <path d="m6 9 6 6 6-6"/>
-          </svg>
+          <div class="custom-select-trigger" (click)="toggleDropdown()">
+            <svg class="select-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M4 6h16M7 12h10M10 18h4"/>
+            </svg>
+            <span class="selected-value-text">{{ selectedCategoryName }}</span>
+            <svg class="chevron-icon" [class.rotated]="isDropdownOpen" width="13" height="13" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </div>
+
+          @if (isDropdownOpen) {
+            <div class="custom-dropdown-menu">
+              <div class="dropdown-item" [class.active]="selectedCategory === null" (click)="selectCategory(null, 'All Categories')">
+                All Categories
+              </div>
+              @for(cat of categories; track cat.id) {
+                <div class="dropdown-item" [class.active]="selectedCategory === cat.id" (click)="selectCategory(cat.id, cat.name)">
+                  {{ cat.name }}
+                </div>
+              }
+            </div>
+          }
         </div>
 
       </div>

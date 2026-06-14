@@ -1,38 +1,42 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { DecodedToken } from '../Core/Models/Auth/DecodedToken';
 import { environment } from '../../environments/environment.development';
+import { UserDto } from '../Core/Models/Auth/UserDto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService 
 {
+  private http = inject(HttpClient);
   private accountApiUrl = environment.baseUrl + "/Account"; 
   private adminApiUrl = environment.baseUrl + "/Admin"; 
   private tokenKey = 'token';
 
   constructor() {}
 
-  register(user: FormData) : void
+  register(user: FormData) : Observable<any>
   {
-    //call api to register
+     return this.http.post(this.accountApiUrl, user);
   }
 
-  update(user: FormData) : void
+  update(user: FormData) : Observable<any>
   {
-    //call api to updateProfile
+    return this.http.put(`${this.accountApiUrl}/update`, user);
   }
 
-  logIn(user: FormData): void
+  logIn(user: FormData): Observable<any>
   {
-    //call api to log in and get token
+    return this.http.post(`${this.accountApiUrl}/login`, user);
     //localStorage.setItem('token', token);
   }
 
-  getUsers() //: UserDto
+  getUsers() : Observable<UserDto[]>
   {
-      
+      return this.http.get<UserDto[]>(this.adminApiUrl);
   }
 
   logOut(): void

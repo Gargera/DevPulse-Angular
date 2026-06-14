@@ -22,11 +22,10 @@
             <th>Username</th>
             <th>Email Address</th>
             <th>Role Status</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          @for (user of users; track user.id) {
+          @for (user of users; track user.userName) {
             <tr>
               <td class="user-fullname">
                 {{ user.firstName }} {{ user.lastName }}
@@ -46,18 +45,6 @@
                     <i class="bi bi-person-fill"></i> User
                   </span>
                 }
-              </td>
-              
-              <td>
-                <div class="action-buttons">
-                  @if (!hasAdminRole(user.roles)) {
-                    <button class="btn-action btn-promote" (click)="makeAdmin(user.id)">
-                      <i class="bi bi-arrow-up-circle-fill"></i> Make Admin
-                    </button>
-                  } @else {
-                    <span class="text-disabled">No actions available</span>
-                  }
-                </div>
               </td>
             </tr>
           } @empty {

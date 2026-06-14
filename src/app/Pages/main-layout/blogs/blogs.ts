@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BlogCard } from '../../../Components/blog-card/blog-card';
 import { Category } from '../../../Core/Models/Category/Category';
 import { BlogService } from '../../../Services/blog.service';
+import { CategoryService } from '../../../Services/category.service';
 
 @Component({
   selector: 'app-blogs',
@@ -13,29 +14,37 @@ import { BlogService } from '../../../Services/blog.service';
 })
 export class Blogs implements OnInit{
   private blogService = inject(BlogService);
+  private categoryService = inject(CategoryService);
 
   blogs: Blog[] = [];
   filteredBlogs: Blog[] = [];
   categories: Category[] = [];
   selectedCategory: number | null = null;
+  selectedCategoryName: string = "All Categories";
+  isDropdownOpen: boolean = false;
   searchQuery = '';
   isLoading = false;
 
-  async ngOnInit(): Promise<void> {
-    await this.loadAllBlogs();
-  }
+  ngOnInit(): void {
+    this.isLoading = true;
 
-  async loadAllBlogs(): Promise<void> {
-    try {
-      this.isLoading = true;
-      this.blogs = await this.blogService.getBlogs();
-      this.filteredBlogs = this.blogs;
-      console.log(this.blogs);
-    } catch (error: any) {
-      console.error('Fetch error:', error);
-    } finally {
-      this.isLoading = false;
-    }
+    this.blogService.getBlogs().subscribe({
+      next: (data) => {
+        this.blogs = this.filteredBlogs = data;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+
+    this.categoryService.getCategories().subscribe({
+      next: (data) => {this.categories = data},
+      error: (err) => {
+        console.log(err);
+      }
+    })
+
+    this.isLoading = false;
   }
 
   onSearch() 
@@ -45,12 +54,29 @@ export class Blogs implements OnInit{
     );
   }
 
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  selectCategory(catId: number | null, catName: string): void {
+    this.selectedCategory = catId;
+    this.selectedCategoryName = catName;
+    this.isDropdownOpen = false;
+    this.onCategoryChange();
+  }
+
   onCategoryChange() 
   {
     if (this.selectedCategory) 
     {
-      // call API: getByCategory(this.selectedCategory)
-      // this.filteredBlogs = result
+      this.isLoading = true;
+      this.blogService.getBlogsByCategory(this.selectedCategory).subscribe({
+        next: (data) => {this.filteredBlogs = data},
+        error: (err) => {
+          console.log(err);
+        }
+      })
+      this.isLoading = false;
     } 
     else 
     {
@@ -67,7 +93,7 @@ export class Blogs implements OnInit{
   resetFilters() 
   { 
     this.searchQuery = ''; 
-    this.selectedCategory = null; 
+    this.selectCategory(null, 'All Categories');
     this.filteredBlogs = [...this.blogs]; 
   }
 }

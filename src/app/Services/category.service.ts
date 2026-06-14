@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category } from '../Core/Models/Category/Category';
@@ -9,8 +9,7 @@ import { environment } from '../../environments/environment.development';
 })
 export class CategoryService {
   private apiUrl = environment.baseUrl + "/category"; 
-
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getCategories(): Observable<Category[]> 
   {
@@ -22,12 +21,12 @@ export class CategoryService {
     return this.http.get<Category>(`${this.apiUrl}/${id}`);
   }
 
-  createCategory(category: Category): Observable<any> 
+  createCategory(category: FormData): Observable<any> 
   {
-    return this.http.post(this.apiUrl, category);
+    return this.http.post(`${this.apiUrl}/create`, category);
   }
 
-  updateCategory(id: number, category: Category): Observable<any> 
+  updateCategory(id: number, category: FormData): Observable<any> 
   {
     return this.http.put(`${this.apiUrl}/${id}`, category);
   }

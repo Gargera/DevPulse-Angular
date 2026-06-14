@@ -1,5 +1,7 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, inject, OnInit} from '@angular/core';
 import { UserDto } from '../../../Core/Models/Auth/UserDto';
+import { AuthService } from '../../../Services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -8,16 +10,19 @@ import { UserDto } from '../../../Core/Models/Auth/UserDto';
   styleUrl: './users.css',
 })
 export class Users implements OnInit{
-  users: UserDto[] = [{id: "0", firstName: "Esraa", lastName: "Taha", userName: "EsraaTaha", email: "esraataha@gmail.com", roles: ["Admin"]}];
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  users: UserDto[] = [];
   isLoading: boolean = false;
 
   ngOnInit(): void {
-    //users = call api
-  }
-
-  makeAdmin(UserId: string)
-  {
-
+    this.authService.getUsers().subscribe({
+        next: (data) => {this.users = data},
+        error: (err) => {
+           this.router.navigate(['/403']);
+        }
+    })
   }
 
   hasAdminRole(roles: string[]): boolean 
