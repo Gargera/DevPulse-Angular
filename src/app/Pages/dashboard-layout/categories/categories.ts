@@ -37,7 +37,6 @@ export class Categories implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.log(err);
         this.isLoading = false;
       }
     });

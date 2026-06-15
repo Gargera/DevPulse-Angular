@@ -73,7 +73,6 @@ export class ProfileLayout implements OnInit {
         this.isInitialLoading = false;
       },
       error: (err) => {
-        console.error(err);
         this.isInitialLoading = false;
       }
     });
@@ -204,7 +203,6 @@ export class ProfileLayout implements OnInit {
             },
             error: (err) => {
               this.isSaving = false;
-              console.error(err);
               Swal.fire({
                 title: 'Update Failed',
                 text: err?.error || 'An error occurred while updating your information.',

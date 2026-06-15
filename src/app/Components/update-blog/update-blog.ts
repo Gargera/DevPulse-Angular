@@ -208,7 +208,6 @@ export class UpdateBlog implements OnInit {
           },
           error: (err) => {
             this.errorMessage = err?.error;
-            console.log(err);
           }
         });
       }
