@@ -2,86 +2,84 @@
 
 ![Angular](https://img.shields.io/badge/Angular-20.0-red)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)
+![RxJS](https://img.shields.io/badge/RxJS-7.8-blueviolet)
 ![Node.js](https://img.shields.io/badge/Node.js-20+-green)
 
-A modern, responsive blogging platform frontend built with **Angular 20**, **TypeScript**, and **Standalone Components**. DevPulse showcases contemporary Angular development practices with component-based architecture, reactive forms, and comprehensive state management.
+A modern, responsive blogging platform frontend built with **Angular 20**, **TypeScript**, and **Standalone Components**. DevPulse showcases contemporary Angular development practices with component-based architecture, reactive patterns, and enterprise-grade API integration.
 
 ## Overview
 
-DevPulse Frontend is a dynamic single-page application (SPA) that provides users with an intuitive interface to create, manage, and discover blog posts. The application leverages **Angular's latest features** including standalone components, signal-based reactivity, and typed routing, ensuring clean separation of concerns and optimal performance.
+DevPulse Frontend is a dynamic single-page application (SPA) that provides users with an intuitive interface to create, manage, and discover blog posts. The application leverages **Angular's latest features** including standalone components, signal-based reactivity, and typed routing for clean separation of concerns and optimal performance.
 
 **Key Highlights:**
-- 🏗️ Standalone Components for modular and efficient architecture
-- 🎯 Component-based UI with reusable, composable modules
+- 🏗️ Standalone Components for modular architecture
+- 🎯 Feature-based folder structure with clear separation
 - 🔐 JWT authentication with secure token management
 - 🛡️ Route guards for protected pages and admin features
-- 📝 Reactive forms for blog creation and editing
+- 📝 Reactive forms with comprehensive validation
 - 🏷️ Dynamic category filtering and blog discovery
-- 📱 Responsive design with Bootstrap Icons integration
-- 🔄 Interceptor-based API integration with automatic token injection
-- 🎨 Clean, modern UI with organized styling
-- ⚡ Signal-based state management for optimal reactivity
+- 🔄 HTTP Interceptors for automatic token injection
+- 🎨 Responsive UI with Bootstrap Icons
+- ⚡ RxJS Observables for reactive data flows
+- 🔧 TypeScript for type-safe development
 
 ## Key Features
 
-### User Authentication & Authorization
-- **User Registration** - Create new user accounts with email and password
+### Authentication & Authorization
+- **User Registration** - Create new accounts with validation
 - **User Login** - JWT-based authentication with persistent token storage
 - **Token Management** - Automatic token injection via HTTP interceptors
-- **Role-Based Access** - Admin and User role-specific features
+- **Role-Based Access** - Admin and User role-specific features and pages
 - **Protected Routes** - Auth guards prevent unauthorized access
-- **Token Expiration** - Graceful handling of expired tokens with re-authentication prompts
 
-### Blog Management Interface
-- **Browse Blogs** - Public access to all published blogs with pagination
+### User Profile Management
+- **Get User Profile** - View profile info (FirstName, LastName, Email, ImageUrl)
+- **Update User Profile** - Update personal information and upload profile image
+- **Profile Image Upload** - Support for profile picture management
+
+### Blog Management
+- **Browse Blogs** - Public access to all published blogs
 - **Filter by Category** - Dynamic category-based blog filtering
-- **View Blog Details** - Comprehensive blog view with metadata
+- **View Blog Details** - Comprehensive blog view with full content and metadata
 - **Create Blog** - Rich form for authenticated users to publish new blogs
 - **Edit Blog** - Users can update only their own blog posts
 - **Delete Blog** - Users can remove their own published blogs
-- **User Dashboard** - Personalized view of user's own blogs
+- **User Dashboard** - Personalized view of user's blog collection
 
-### Category Management
-- **Category Listing** - Browse all available blog categories
-- **Filter Blogs by Category** - Quick access to categorized content
-- **Admin Category Management** - Admin dashboard for category CRUD operations
-
-### User Interface Features
-- **Responsive Navigation** - Dynamic nav with authentication state
-- **Blog Card Components** - Reusable blog preview cards with metadata
-- **Form Validation** - Real-time form validation with error messaging
-- **Error Handling** - User-friendly error messages and recovery flows
-- **Loading States** - Visual feedback during API operations
+### Admin Dashboard
+- **Manage All Blogs** - Admin view of all platform blogs
+- **Manage Categories** - CRUD operations for blog categories
+- **Manage Users** - View and manage user accounts
 
 ## Architecture
 
-DevPulse Frontend follows **Modern Angular Architecture** with standalone components and feature-based organization:
+DevPulse Frontend follows **Modern Angular Architecture** with standalone components and organized structure:
 
 ```
-┌──────────────────────────────────────────────────────┐
-│           App Component (Root)                       │
-│      Router Outlet | Layout Management              │
+┌────────────────────────────────────────────────────────┐
+│          App Component (Root)                          │
+│       RouterOutlet | Layout Management                 │
 └─────────────────────┬────────────────────────────────┘
                       │
 ┌─────────────────────┴────────────────────────────────┐
-│         Page Components (Feature Routes)             │
-│   AuthLayout | MainLayout | DashboardLayout         │
+│      Page Components (Feature Routes)                 │
+│  AuthLayout | MainLayout | DashboardLayout           │
 └─────────────────────┬────────────────────────────────┘
                       │
 ┌─────────────────────┴────────────────────────────────┐
-│         UI Components (Reusable)                    │
-│   BlogCard | BlogDetails | Navigation               │
+│     UI Components (Reusable)                          │
+│  BlogCard | BlogDetails | Footer | Navigation        │
 └─────────────────────┬────────────────────────────────┘
                       │
 ┌─────────────────────┴────────────────────────────────┐
-│         Services (Business Logic)                    │
-│  AuthService | BlogService | CategoryService        │
+│    Services (Business Logic & API)                    │
+│ AuthService | BlogService | CategoryService          │
 └─────────────────────┬────────────────────────────────┘
                       │
 ┌─────────────────────┴────────────────────────────────┐
-│       Core Layer (Guards, Interceptors)             │
-│  AuthGuard | AdminGuard | JwtInterceptor            │
-└──────────────────────────────────────────────────────┘
+│ Core Layer (Guards, Interceptors, Models)            │
+│  AuthGuard | AdminGuard | JwtInterceptor | Models    │
+└────────────────────────────────────────────────────────┘
 ```
 
 ### Design Patterns Implemented
@@ -89,11 +87,11 @@ DevPulse Frontend follows **Modern Angular Architecture** with standalone compon
 | Pattern | Purpose |
 |---------|---------|
 | **Standalone Components** | Self-contained, modular components without NgModule |
-| **Services with Dependency Injection** | Centralized business logic and API communication |
-| **HTTP Interceptors** | Automatic JWT token injection and response handling |
+| **Services with DI** | Centralized business logic and API communication |
+| **HTTP Interceptors** | Automatic JWT token injection and error handling |
 | **Route Guards** | Protection of authenticated and admin-only routes |
-| **Reactive Forms** | Form validation and state management |
-| **Custom Directives** | Reusable DOM behaviors (e.g., category color coding) |
+| **Reactive Forms** | Advanced form validation and state management |
+| **Custom Directives** | Reusable DOM behaviors (e.g., category color styling) |
 | **Model-based Architecture** | Type-safe data structures using TypeScript interfaces |
 | **RxJS Observables** | Reactive data streams and asynchronous operations |
 
@@ -268,20 +266,20 @@ DevPulse-Angular/
 └── README.md                              # This file
 ```
 
-## Main Services
+## Core Services
 
 ### AuthService
-Handles user authentication and session management:
+Handles user authentication and profile management:
 - `register(userData)` - User account creation
 - `login(credentials)` - User authentication
+- `update(userData)` - Update user profile and image
+- `getUserProfile()` - Retrieve current user profile
 - `logout()` - Session termination
-- `isAuthenticated()` - Check authentication status
-- `getCurrentUser()` - Retrieve current user data
 - `getToken()` - Access stored JWT token
-- `decodeToken()` - Parse JWT payload for user claims
+- `getUsers()` - Get all users (admin)
 
 ### BlogService
-Manages blog CRUD operations and retrieval:
+Manages blog CRUD operations and filtering:
 - `getAllBlogs()` - Fetch all published blogs
 - `getBlogById(id)` - Retrieve specific blog content
 - `getBlogsByCategory(categoryId)` - Filter blogs by category
@@ -291,14 +289,21 @@ Manages blog CRUD operations and retrieval:
 - `deleteBlog(id)` - Remove blog post
 
 ### CategoryService
-Handles category operations and data retrieval:
+Handles category operations:
 - `getAllCategories()` - Fetch all available categories
-- `getCategoryById(id)` - Get specific category details
+- `getCategoryById(id)` - Get category details
 - `createCategory(categoryData)` - Admin: Create new category
 - `updateCategory(id, categoryData)` - Admin: Update category
-- `deleteCategory(id)` - Admin: Remove category
+- `deleteCategory(id)` - Admin: Delete category
 
-## Core Components & Utilities
+## Authentication & Authorization
+
+### JWT (JSON Web Tokens)
+- **Token Storage** - localStorage with automatic expiration handling
+- **Token Injection** - Automatic HTTP header injection via interceptor
+- **Token Decoding** - Client-side JWT parsing using `jwt-decode` library
+- **Token Validation** - Expiration and signature verification
+- **Logout Handling** - Graceful token removal and session cleanup
 
 ### Route Guards
 **AuthGuard** - Protects authenticated routes:
@@ -307,9 +312,14 @@ Handles category operations and data retrieval:
 - Allows access to authenticated users only
 
 **AdminGuard** - Protects admin-only routes:
-- Checks for valid JWT token
+- Checks valid JWT token
 - Verifies admin role in token claims
 - Denies access to non-admin users
+
+### Role-Based Access Control (RBAC)
+- **User Role** - Default role with blog management access
+- **Admin Role** - Elevated privileges for category and system management
+- **Public Access** - Anonymous browsing of published content
 
 ### HTTP Interceptor
 **JwtInterceptor** - Automatic token management:
@@ -317,39 +327,6 @@ Handles category operations and data retrieval:
 - Handles token refresh logic
 - Manages 401 unauthorized responses
 - Provides consistent error handling
-
-### Custom Directives
-**CategoryColorDirective** - Dynamic styling:
-- Applies category-specific colors to elements
-- Enhances visual blog categorization
-- Improves user experience with visual cues
-
-## Authentication & Authorization
-
-### JWT (JSON Web Tokens)
-- **Token Storage** - Secure localStorage with fallback to sessionStorage
-- **Token Injection** - Automatic HTTP header injection via interceptor
-- **Token Decoding** - Client-side JWT parsing using `jwt-decode` library
-- **Token Validation** - Expiration and signature verification
-- **Logout Handling** - Graceful token removal and session cleanup
-
-### Role-Based Access Control (RBAC)
-- **User Role** - Default role for registered users with blog management access
-- **Admin Role** - Elevated privileges for category and system management
-- **Public Access** - Anonymous browsing of published content
-- **Protected Routes** - Angular route guards enforce role-based access
-
-### Route Protection Examples
-```typescript
-// Public route - available to all
-{ path: 'home', component: HomeComponent }
-
-// Authenticated route - login required
-{ path: 'create-blog', component: CreateBlogComponent, canActivate: [authGuard] }
-
-// Admin-only route - admin role required
-{ path: 'dashboard', component: DashboardComponent, canActivate: [adminGuard] }
-```
 
 ## Technologies Used
 
@@ -361,12 +338,12 @@ Handles category operations and data retrieval:
 ### Frontend Architecture
 - **Standalone Components** - Self-contained, tree-shakeable components
 - **Typed Routes** - Type-safe Angular routing
-- **Signals API** - Reactive state management (preview)
+- **Signals API** - Reactive state management
 
 ### HTTP & API Communication
 - **HttpClientModule** - RESTful API integration
 - **HTTP Interceptors** - Request/response processing
-- **RxJS Operators** - Async data transformation (map, tap, catchError)
+- **RxJS Operators** - Async data transformation
 
 ### Forms & Validation
 - **Reactive Forms** - Form state management and validation
@@ -380,15 +357,20 @@ Handles category operations and data retrieval:
 - **Route Guards** - Protected route access
 
 ### UI & Styling
-- **Bootstrap Icons** - Icon library (1,700+ icons)
+- **Bootstrap Icons 1.13.1** - Icon library
 - **CSS3** - Modern stylesheet features
 - **Responsive Design** - Mobile-first approach
 
 ### Testing & Development
-- **Jasmine** - Testing framework
-- **Karma** - Test runner
-- **Angular CLI** - Development toolkit
+- **Jasmine 5.9** - Testing framework
+- **Karma 6.4** - Test runner
+- **Angular CLI 20.3.26** - Development toolkit
 - **Prettier** - Code formatting
+
+### Additional Libraries
+- **SweetAlert2 11.26.25** - Beautiful alert dialogs
+- **Zone.js 0.15** - Angular zone management
+- **tslib 2.3** - TypeScript helper library
 
 ## Local Setup
 
@@ -396,7 +378,7 @@ Handles category operations and data retrieval:
 - **Node.js 20+** - [Download](https://nodejs.org/)
 - **npm 10+** - Bundled with Node.js
 - **Angular CLI 20+** - `npm install -g @angular/cli@latest`
-- **DevPulse Backend API** - Running on `https://localhost:5001`
+- **DevPulse Backend** - Running on `https://localhost:5001`
 - **Git** - Version control
 
 ### Installation Steps
@@ -415,20 +397,15 @@ Handles category operations and data retrieval:
 3. **Configure API Connection**
    - Open `src/environments/environment.development.ts`
    - Set API base URL:
-     ```typescript
-     export const environment = {
-       production: false,
-       apiUrl: 'https://localhost:5001/api'
-     };
-     ```
-   - Ensure DevPulse backend API is running on this URL
+   ```typescript
+   export const environment = {
+     production: false,
+     baseUrl: 'https://localhost:5001'
+   };
+   ```
+   - Ensure DevPulse backend API is running
 
-4. **Configure JWT Settings**
-   - Verify JWT configuration in `AuthService`
-   - Token is stored in localStorage with key `authToken`
-   - Token is decoded and validated before API requests
-
-5. **Start Development Server**
+4. **Start Development Server**
    ```bash
    npm start
    ```
@@ -437,9 +414,9 @@ Handles category operations and data retrieval:
    ng serve
    ```
 
-6. **Access the Application**
+5. **Access the Application**
    - Application: `http://localhost:4200`
-   - Hot reload enabled - changes reflect automatically
+   - Hot reload enabled for development
 
 ### Development Commands
 
@@ -450,12 +427,14 @@ ng serve
 
 # Build for production
 npm run build
+ng build --configuration production
 
 # Run unit tests
 npm test
 
 # Watch mode (build on file changes)
 npm run watch
+ng build --watch
 
 # Generate new component
 ng generate component Components/my-component
@@ -464,100 +443,27 @@ ng generate component Components/my-component
 ng generate service Services/my-service
 ```
 
-### Environment Setup
+## API Endpoints Overview
 
-**Development Environment** (`src/environments/environment.development.ts`)
-```typescript
-export const environment = {
-  production: false,
-  apiUrl: 'https://localhost:5001/api'
-};
-```
-
-**Production Environment** (`src/environments/environment.ts`)
-```typescript
-export const environment = {
-  production: true,
-  apiUrl: 'https://your-production-api.com/api'
-};
-```
-
-## Component Hierarchy
-
-```
-AppComponent (Root)
-├── NavComponent (Shared Navigation)
-├── Main Router Outlet
-│   ├── AuthLayout
-│   │   ├── LoginComponent
-│   │   └── RegisterComponent
-│   ├── MainLayout
-│   │   ├── HomeComponent
-│   │   │   └── HomeLayoutComponent
-│   │   ├── BlogsComponent
-│   │   │   └── BlogCardComponent (Multiple)
-│   │   ├── BlogDetailsComponent
-│   │   ├── CreateBlogComponent
-│   │   ├── UpdateBlogComponent
-│   │   └── ProfileLayoutComponent
-│   ├── DashboardLayout (Admin Only)
-│   │   ├── AllBlogsComponent
-│   │   ├── CategoriesComponent
-│   │   └── UsersComponent
-│   └── NotFoundComponent
-└── FooterComponent (Shared Footer)
-```
-
-## Routing Configuration
-
-```typescript
-// Feature routes mapped in app.routes.ts
-export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  
-  // Authentication routes
-  { path: 'auth', component: AuthLayoutComponent, children: [
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent }
-  ]},
-  
-  // Public routes
-  { path: 'home', component: MainLayoutComponent, children: [
-    { path: '', component: HomeComponent }
-  ]},
-  
-  // Protected user routes
-  { path: 'my-blogs', component: MyBlogsComponent, canActivate: [authGuard] },
-  { path: 'create-blog', component: CreateBlogComponent, canActivate: [authGuard] },
-  
-  // Protected admin routes
-  { path: 'dashboard', component: DashboardLayoutComponent, canActivate: [adminGuard] },
-  
-  // Error route
-  { path: '**', component: NotFoundComponent }
-];
-```
-
-## API Integration
-
-The frontend communicates with DevPulse Backend API through RESTful endpoints:
-
-### Authentication Endpoints
+### Authentication & Profile
 - `POST /api/account/register` - Create new account
-- `POST /api/account/login` - Authenticate user
+- `POST /api/account/login` - Authenticate and get JWT token
+- `GET /api/account/UserProfile` - Get current user profile (auth)
+- `PUT /api/account/update` - Update profile with image (auth)
+- `GET /api/Admin` - Get all users (admin)
 
-### Blog Endpoints
-- `GET /api/blog` - Fetch all blogs
-- `GET /api/blog/{id}` - Get blog details
-- `GET /api/blog/category/{categoryId}` - Filter by category
-- `GET /api/blog/my-blogs` - User's blogs
-- `POST /api/blog` - Create blog (auth required)
-- `PUT /api/blog/{id}` - Update blog (auth required)
-- `DELETE /api/blog/{id}` - Delete blog (auth required)
+### Blogs
+- `GET /api/blog` - Get all blogs (public)
+- `GET /api/blog/{id}` - Get blog details (public)
+- `GET /api/blog/category/{categoryId}` - Filter by category (public)
+- `GET /api/blog/my-blogs` - Get user's blogs (auth)
+- `POST /api/blog` - Create blog (auth)
+- `PUT /api/blog/{id}` - Update blog (auth, owner/admin)
+- `DELETE /api/blog/{id}` - Delete blog (auth, owner/admin)
 
-### Category Endpoints
-- `GET /api/category` - All categories
-- `GET /api/category/{id}` - Category details
+### Categories
+- `GET /api/category` - Get all categories (public)
+- `GET /api/category/{id}` - Get category details (admin)
 - `POST /api/category` - Create category (admin)
 - `PUT /api/category/{id}` - Update category (admin)
 - `DELETE /api/category/{id}` - Delete category (admin)
@@ -572,7 +478,7 @@ The frontend communicates with DevPulse Backend API through RESTful endpoints:
 
 ### Angular Best Practices
 - OnPush change detection strategy
-- Unsubscribe from observables
+- Unsubscribe from observables to prevent memory leaks
 - Lazy loading for routes
 - Standalone components usage
 - Reactive forms for complex inputs
@@ -588,9 +494,8 @@ The frontend communicates with DevPulse Backend API through RESTful endpoints:
 - **Lazy Loading** - Load features on-demand to reduce initial bundle
 - **Change Detection** - OnPush strategy for optimal rendering
 - **Unsubscribe Pattern** - Prevent memory leaks from subscriptions
-- **Tree Shaking** - Remove unused code in production build
+- **Tree Shaking** - Remove unused code in production builds
 - **Image Optimization** - Lazy load and responsive images
-- **Bundle Analysis** - Monitor build size and dependencies
 
 ## Troubleshooting
 
@@ -598,33 +503,23 @@ The frontend communicates with DevPulse Backend API through RESTful endpoints:
 
 **CORS Errors**
 - Ensure DevPulse backend allows frontend origin
-- Check browser console for CORS-related messages
-- Verify API URL configuration in environment files
+- Check browser console for CORS messages
+- Verify API URL configuration
 
-**Authentication Token Not Persisting**
-- Check browser localStorage/sessionStorage settings
-- Verify JWT token is being stored correctly
-- Check token expiration time
+**Authentication Token Issues**
+- Check browser localStorage for token
+- Verify JWT token hasn't expired
+- Clear localStorage and re-login
+
+**API Calls Failing**
+- Verify backend API is running
+- Check network tab in developer tools
+- Verify JWT token is in Authorization header
 
 **Components Not Rendering**
 - Verify route configuration in `app.routes.ts`
 - Check component standalone declaration
 - Review browser console for errors
-
-**API Calls Failing**
-- Verify backend API is running on configured URL
-- Check network tab in developer tools
-- Verify JWT token is being sent in Authorization header
-
-### Debugging
-
-```bash
-# Enable Angular debugging in browser console
-ng.probe(document.querySelector('app-root')).componentInstance
-
-# Check for memory leaks
-# DevTools > Memory > Take heap snapshot
-```
 
 ## Contributing
 
@@ -636,26 +531,22 @@ Contributions are welcome! Please follow these guidelines:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## Future Enhancements
+## Recent Enhancements
 
-- [ ] Dark mode theme toggle
-- [ ] Blog search functionality
-- [ ] Comments and ratings system
-- [ ] User notifications
-- [ ] Social media sharing
-- [ ] Advanced blog analytics
-- [ ] PWA (Progressive Web App) support
-- [ ] Internationalization (i18n)
-- [ ] Blog image upload and optimization
-- [ ] Advanced filtering and sorting options
+✅ **Angular 20 Upgrade** - Latest Angular features and performance improvements  
+✅ **Standalone Components** - Modern component architecture without NgModule  
+✅ **User Profile Management** - Profile viewing and image upload  
+✅ **Admin Dashboard** - Comprehensive admin panel for system management  
+✅ **Enhanced Authentication** - Improved JWT handling and token management  
+✅ **Reactive Forms** - Advanced form validation and state management  
 
 ## Author
 
 **Gargera**
 - GitHub: [@Gargera](https://github.com/Gargera)
-- Repository Frontend: [DevPulse-Angular](https://github.com/Gargera/DevPulse-Angular)
-- Repository Backend: [DevPulse-WebAPI](https://github.com/Gargera/DevPulse-WebAPI)
+- Frontend Repository: [DevPulse-Angular](https://github.com/Gargera/DevPulse-Angular)
+- Backend Repository: [DevPulse-WebAPI](https://github.com/Gargera/DevPulse-WebAPI)
 
 ---
 
-**DevPulse** © 2024. Built with modern Angular development practices and Clean Architecture principles.
+**DevPulse** © 2024-2026. Built with modern Angular development practices and contemporary web standards.
