@@ -21,7 +21,7 @@ export class AuthService
 
   register(user: FormData) : Observable<any>
   {
-     return this.http.post(this.accountApiUrl, user);
+     return this.http.post(`${this.accountApiUrl}/register`, user);
   }
 
   update(user: FormData) : Observable<any>
