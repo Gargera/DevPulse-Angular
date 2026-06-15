@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { DecodedToken } from '../Core/Models/Auth/DecodedToken';
 import { environment } from '../../environments/environment.development';
 import { UserDto } from '../Core/Models/Auth/UserDto';
+import { ProfileDto } from '../Core/Models/profile/ProfileDto';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,11 @@ export class AuthService
   update(user: FormData) : Observable<any>
   {
     return this.http.put(`${this.accountApiUrl}/update`, user);
+  }
+
+  getUserProfile() : Observable<ProfileDto>
+  {
+    return this.http.get<ProfileDto>(`${this.accountApiUrl}/UserProfile`);
   }
 
   logIn(user: any): Observable<any>
@@ -60,6 +66,11 @@ export class AuthService
     {
       return null;
     }
+  }
+
+  getUserEmail(): string | null {
+    const decoded = this.getDecodedToken();
+    return decoded ? decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || null : null;
   }
 
   getUserId(): string | null {

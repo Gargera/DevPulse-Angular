@@ -51,11 +51,11 @@ export class CreateBlog implements OnInit {
     if (!input.files?.length) return;
 
     const file = input.files[0];
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
 
     if (!allowedTypes.includes(file.type))
     {
-      this.imageError = 'Only JPG, PNG and WEBP are allowed';
+      this.imageError = 'Only JPG, JPEG, PNG and WEBP are allowed';
       this.selectedImage = null;
       this.imagePreview = null;
       this.selectedFileName = '';

@@ -1,87 +1,148 @@
 <div class="profile-container">
   
-  <div class="profile-header-card glass-card">
-    <div class="user-meta-zone">
-      <div class="profile-avatar">
-        {{ username.charAt(0).toUpperCase() }}
-      </div>
-      <div class="profile-details">
-        <h2>{{ fullName }}</h2>
-        <span class="user-tag">&#64;{{ username }}</span>
-        <span class="profile-badge" [class.admin-badge]="roleName.includes('Admin')">
-          <i class="bi" [class.bi-shield-lock-fill]="roleName.includes('Admin')" [class.bi-person-fill]="roleName.includes('User')"></i>
-          {{ roleName }} Member
-        </span>
+  @if (isInitialLoading) {
+    <div class="initial-spinner-container">
+      <div class="custom-spinner"></div>
+      <p>Loading your profile ecosystem...</p>
+    </div>
+  } @else {
+    <div class="profile-header-card glass-card">
+      <div class="user-meta-zone">
+        <div class="profile-avatar">
+          @if (userProfileImage) {
+            <img [src]="userProfileImage" alt="Profile Avatar" class="avatar-img-element" />
+          } @else {
+            {{ username ? username.charAt(0).toUpperCase() : 'U' }}
+          }
+        </div>
+        <div class="profile-details">
+          <h2>{{ firstName }} {{ lastName }}</h2>
+          <span class="user-tag">&#64;{{ username }}</span>
+          <span class="profile-badge" [class.admin-badge]="roleName.includes('Admin')">
+            <i class="bi" [class.bi-shield-lock-fill]="roleName.includes('Admin')" [class.bi-person-fill]="roleName.includes('User')"></i>
+            {{ roleName.join(', ') }} Member
+          </span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="profile-tabs-nav">
-    <button 
-      class="tab-btn" 
-      [class.active]="activeTab === 'blogs'" 
-      (click)="switchTab('blogs')"
-    >
-      <i class="bi bi-journal-text"></i> My Published Blogs
-    </button>
-    <button 
-      class="tab-btn" 
-      [class.active]="activeTab === 'settings'" 
-      (click)="switchTab('settings')"
-    >
-      <i class="bi bi-gear-fill"></i> Account Settings
-    </button>
-  </div>
+    <div class="profile-tabs-nav">
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'blogs'" 
+        (click)="switchTab('blogs')"
+      >
+        <i class="bi bi-journal-text"></i> My Published Blogs
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'settings'" 
+        (click)="switchTab('settings')"
+      >
+        <i class="bi bi-gear-fill"></i> Account Settings
+      </button>
+    </div>
 
-  <div class="tab-content-wrapper">
-    
-    @if (activeTab === 'blogs') {
-      <div class="fade-in-tab">
-        <router-outlet></router-outlet>
-      </div>
-    }
+    <div class="tab-content-wrapper">
+      
+      @if (activeTab === 'blogs') {
+        <div class="fade-in-tab">
+          <router-outlet></router-outlet>
+        </div>
+      }
 
-    @if (activeTab === 'settings') {
-      <div class="settings-zone glass-card fade-in-tab">
-        <h3>Update Profile Information</h3>
-        <p class="section-subtitle">Modify your personal information details below.</p>
-        
-        <form (ngSubmit)="onUpdateProfile()" #settingsForm="ngForm">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="fName">First Name</label>
-              <input 
-                type="text" 
-                id="fName" 
-                name="firstName" 
-                [(ngModel)]="firstName" 
-                required
-                placeholder="Enter new first name"
-                class="profile-input"
-              />
-            </div>
-            <div class="form-group">
-              <label for="lName">Last Name</label>
-              <input 
-                type="text" 
-                id="lName" 
-                name="lastName" 
-                [(ngModel)]="lastName" 
-                required
-                placeholder="Enter new last name"
-                class="profile-input"
-              />
-            </div>
+      @if (activeTab === 'settings') {
+        <div class="settings-zone glass-card fade-in-tab">
+          <div class="settings-header">
+            <h3>Update Profile Information</h3>
+            <p class="section-subtitle">Modify your personal information details below.</p>
           </div>
+          
+          <form [formGroup]="profileForm" (ngSubmit)="onUpdateProfile()" class="centered-settings-form">
+            
+            <div class="image-modify-wrapper">
+              <div class="avatar-editor-frame" [class.has-error]="imageError">
+                @if (imagePreview) {
+                  <img [src]="imagePreview" alt="Editor Preview" />
+                  <button type="button" class="btn-delete-avatar" (click)="removeImage()" aria-label="Remove photo">
+                    <i class="bi bi-x-circle-fill"></i>
+                  </button>
+                } @else {
+                  <div class="placeholder-icon-frame">
+                    <i class="bi bi-camera"></i>
+                  </div>
+                }
+              </div>
+              <label class="btn-upload-avatar">
+                <i class="bi bi-cloud-arrow-up"></i> {{ imagePreview ? 'Change Photo' : 'Upload Profile Photo' }}
+                <input type="file" accept="image/*" hidden (change)="onFileSelected($event)" />
+              </label>
+              @if (imageError) {
+                <span class="image-error-text">{{ imageError }}</span>
+              }
+            </div>
 
-          <div class="form-actions">
-            <button type="submit" class="btn-save-profile" [disabled]="!settingsForm.valid || isSaving">
-              Save Changes
-            </button>
-          </div>
-        </form>
-      </div>
-    }
+            <div class="form-vertical-stack">
+              <div class="form-group readonly-group">
+                <label>Username</label>
+                <div class="input-lock-wrapper">
+                  <i class="bi bi-lock-fill lock-icon"></i>
+                  <input 
+                    type="text" 
+                    [value]="username" 
+                    readonly 
+                    class="profile-input disabled-input"
+                  />
+                </div>
+              </div>
 
-  </div>
+              <div class="form-group readonly-group">
+                <label>Email Address</label>
+                <div class="input-lock-wrapper">
+                  <i class="bi bi-lock-fill lock-icon"></i>
+                  <input 
+                    type="email" 
+                    [value]="email" 
+                    readonly 
+                    class="profile-input disabled-input"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="fName">First Name</label>
+                <input 
+                  type="text" 
+                  id="fName" 
+                  formControlName="firstName"
+                  placeholder="Enter first name"
+                  class="profile-input"
+                />
+                <span class="error-message">{{ firstNameValid.Message }}</span>
+              </div>
+
+              <div class="form-group">
+                <label for="lName">Last Name</label>
+                <input 
+                  type="text" 
+                  id="lName" 
+                  formControlName="lastName"
+                  placeholder="Enter last name"
+                  class="profile-input"
+                />
+                <span class="error-message">{{ lastNameValid.Message }}</span>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-save-profile">
+                {{ isSaving ? 'Saving Changes...' : 'Save Changes 🚀' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      }
+
+    </div>
+  }
 </div>
