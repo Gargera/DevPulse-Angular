@@ -3,5 +3,5 @@ export interface ProfileDto {
   lastName: string;
   userName: string;
   email: string;
-  imageurl: string | null;
+  imageUrl: string | null;
 }

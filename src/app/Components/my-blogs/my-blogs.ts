@@ -5,6 +5,7 @@ import { Blog } from '../../Core/Models/Blog/Blog';
 import { BlogService } from '../../Services/blog.service';
 import { TruncatePipe } from '../../Core/pipes/truncate-pipe';
 import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-my-blogs',
@@ -16,6 +17,8 @@ import Swal from 'sweetalert2';
 export class MyBlogs implements OnInit {
   private blogService = inject(BlogService);
   private router = inject(Router);
+
+  domainUrl = environment.baseUrl;
 
   myBlogs: Blog[] = [];
   isLoading: boolean = true;
@@ -37,8 +40,6 @@ export class MyBlogs implements OnInit {
         this.isLoading = false;
         if (err?.error?.status === 401) {
           this.router.navigate(["/403"]);
-        } else {
-          console.log(err);
         }
       }
     });

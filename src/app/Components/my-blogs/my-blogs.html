@@ -31,12 +31,7 @@
         </thead>
         <tbody>
           @for (blog of myBlogs; track blog.id) {
-            <tr>
-              <td>
-                <div class="img-preview">
-                  <img [src]="blog.imageUrl || 'assets/default-blog.png'" alt="Blog Image" />
-                </div>
-              </td>
+            <tr>   
               <td class="blog-title">{{ blog.title | truncate:30 }}</td>
               <td><span class="category-badge">{{ blog.categoryName }}</span></td>
               <td>

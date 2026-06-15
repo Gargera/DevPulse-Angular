@@ -335,8 +335,27 @@
   line-height: 1.7;
 }
 
-.home-layout-section{
-    background-color: var(--p3);
+.home-layout-section {
+  background-color: var(--p3); 
+  padding: 60px 5vw; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-layout-section > app-create-blog {
+  width: 100%;
+  max-width: 680px; 
+  display: block;
+  
+  box-shadow: 0 20px 40px rgba(76, 29, 149, 0.25);
+  border-radius: 12px;
+}
+
+@media (max-width: 580px) {
+  .home-layout-section {
+    padding: 32px 16px;
+  }
 }
 
 @keyframes fadeUp {

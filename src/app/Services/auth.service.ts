@@ -13,8 +13,8 @@ import { ProfileDto } from '../Core/Models/profile/ProfileDto';
 export class AuthService 
 {
   private http = inject(HttpClient);
-  private accountApiUrl = environment.baseUrl + "/Account"; 
-  private adminApiUrl = environment.baseUrl + "/Admin"; 
+  private accountApiUrl = environment.baseUrl + "/api/Account"; 
+  private adminApiUrl = environment.baseUrl + "/api/Admin"; 
   private tokenKey = 'token';
 
   constructor() {}

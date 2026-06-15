@@ -59,10 +59,13 @@ export class ProfileLayout implements OnInit {
           lastName: user.lastName
         });
 
-        if (user.imageurl) {
-          this.userProfileImage = this.domainUrl + user.imageurl;
-          this.imagePreview = this.domainUrl + user.imageurl;
-        } else {
+        if (user.imageUrl) 
+        {
+          this.userProfileImage = this.domainUrl + user.imageUrl;
+          this.imagePreview = this.domainUrl + user.imageUrl;
+        } 
+        else 
+        {
           this.userProfileImage = null;
           this.imagePreview = null;
         }

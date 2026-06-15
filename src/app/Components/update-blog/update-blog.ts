@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BlogService } from '../../Services/blog.service';
 import { CategoryService } from '../../Services/category.service';
 import { Category } from '../../Core/Models/Category/Category';
@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-update-blog',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './update-blog.html',
   styleUrl: './update-blog.css'
 })
@@ -188,7 +188,7 @@ export class UpdateBlog implements OnInit {
       formData.append('CategoryName', this.updateForm.value.Category);
       
       if (this.selectedFile) {
-        formData.append('ImageFile', this.selectedFile);
+        formData.append('Image', this.selectedFile);
       }
 
       Swal.fire({

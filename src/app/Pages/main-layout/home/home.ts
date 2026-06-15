@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { HomeLayout } from "../../../Components/home-layout/home-layout";
 import { RouterLink } from '@angular/router';
+import { CreateBlog } from "../../../Components/create-blog/create-blog";
 
 @Component({
   selector: 'app-home',
-  imports: [HomeLayout, RouterLink],
+  imports: [RouterLink, CreateBlog],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

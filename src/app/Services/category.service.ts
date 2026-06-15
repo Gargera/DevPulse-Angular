@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment.development';
   providedIn: 'root'
 })
 export class CategoryService {
-  private apiUrl = environment.baseUrl + "/category"; 
+  private apiUrl = environment.baseUrl + "/api/category"; 
   private http = inject(HttpClient);
 
   getCategories(): Observable<Category[]> 

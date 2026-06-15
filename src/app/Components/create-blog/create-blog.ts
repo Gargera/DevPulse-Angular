@@ -6,9 +6,11 @@ import { Blog } from '../../Core/Models/Blog/Blog';
 import { BlogService } from '../../Services/blog.service';
 import { CategoryService } from '../../Services/category.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2'; // 💡 استيراد مكتبة SweetAlert2
 
 @Component({
   selector: 'app-create-blog',
+  standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './create-blog.html',
   styleUrl: './create-blog.css',
@@ -144,11 +146,18 @@ export class CreateBlog implements OnInit {
       sendData.append('CategoryName', this.blogForm.value.Category);
 
       if (this.selectedImage) {
-        sendData.append('ImageFile', this.selectedImage);
+        sendData.append('Image', this.selectedImage);
       }
 
       this.blogService.createBlog(sendData).subscribe({
         next: () => {
+          Swal.fire({
+            title: 'Published Successfully! 🚀',
+            text: 'Your new blog post has been created and shared with the community.',
+            icon: 'success',
+            confirmButtonColor: '#7c3aed'
+          });
+
           this.blogForm.reset({ Title: '', Content: '', Category: '' });
           this.imagePreview = null;
           this.selectedFileName = '';

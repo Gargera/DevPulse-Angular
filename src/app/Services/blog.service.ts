@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment.development';
 })
 
 export class BlogService {
-  private apiUrl = environment.baseUrl + "/blog"
+  private apiUrl = environment.baseUrl + "/api/blog"
   private http = inject(HttpClient);
 
  getBlogs(): Observable<Blog[]> {

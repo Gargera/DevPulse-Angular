@@ -85,10 +85,10 @@ export class Register {
   updateStrength(event: Event): void {
     const val = (event.target as HTMLInputElement).value;
     let score = 0;
-    if (val.length >= 8)           score++;
+    if (val.length >= 8)          score++;
     if (/[A-Z]/.test(val))        score++;
     if (/[0-9]/.test(val))        score++;
-    if (/[^A-Za-z0-9]/.test(val)) score++;
+    if (/[a-z]/.test(val))        score++;
     this.passwordStrength = score;
   }
 
@@ -223,7 +223,7 @@ export class Register {
       formData.append('Password', this.registerForm.value.password);
       
       if (this.selectedFile) {
-        formData.append('ProfileImage', this.selectedFile);
+        formData.append('Image', this.selectedFile);
       }
 
       this.authService.register(formData).subscribe({
