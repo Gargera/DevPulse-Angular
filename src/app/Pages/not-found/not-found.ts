@@ -1,13 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-not-found',
-  imports: [RouterLink],
+  standalone: true,
+  imports: [CommonModule, RouterLink],
   templateUrl: './not-found.html',
   styleUrl: './not-found.css',
 })
-export class NotFound {
+export class NotFound implements OnInit {
   private route = inject(ActivatedRoute);
 
   statusCode: string = '404';
