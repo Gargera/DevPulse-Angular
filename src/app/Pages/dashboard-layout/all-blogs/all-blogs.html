@@ -28,7 +28,7 @@
       <table class="admin-table">
         <thead>
           <tr>
-            <th>Image</th>
+            <th>UserName</th>
             <th>Title</th>
             <th>Category</th>
             <th>Actions</th>
@@ -38,11 +38,11 @@
           @for (blog of filteredBlogs; track blog.id) {
             <tr>
               <td>
-                <div class="img-preview">
-                  <img [src]="blog.imageUrl || 'assets/default-blog.png'" alt="Blog Image" />
+                <div>
+                  <p style = "font-weight: bold;">@{{blog.userName}}</p>
                 </div>
               </td>
-              <td class="blog-title">{{ blog.title | truncate:30}}</td>
+              <td class="blog-title">{{ blog.title | truncate:35}}</td>
               <td><span class="category-badge">{{ blog.categoryName }}</span></td>
               <td>
                 <div class="action-buttons">
