@@ -7,6 +7,7 @@ import { BlogService } from '../../Services/blog.service';
 import { CategoryService } from '../../Services/category.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2'; // 💡 استيراد مكتبة SweetAlert2
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-create-blog',
@@ -18,6 +19,7 @@ import Swal from 'sweetalert2'; // 💡 استيراد مكتبة SweetAlert2
 export class CreateBlog implements OnInit {
   private blogService = inject(BlogService);
   private categoryService = inject(CategoryService);
+  private authService = inject(AuthService);
   private router = inject(Router);
 
   Id: number = 0;
@@ -149,7 +151,10 @@ export class CreateBlog implements OnInit {
         sendData.append('Image', this.selectedImage);
       }
 
-      this.blogService.createBlog(sendData).subscribe({
+      if(!this.authService.isLoggedIn()) this.router.navigate(["/auth/login"]);
+      else
+      {
+        this.blogService.createBlog(sendData).subscribe({
         next: () => {
           Swal.fire({
             title: 'Published Successfully! 🚀',
@@ -169,6 +174,7 @@ export class CreateBlog implements OnInit {
           console.log(err);
         }
       });
+      }
     }
   }
 }
